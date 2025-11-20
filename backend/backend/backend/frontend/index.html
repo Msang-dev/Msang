@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kenyan Smart Grid - Student Project</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+    <script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="loginScreen" class="screen active">
+        <div class="login-container">
+            <div class="login-card">
+                <h1>⚡ KENYAN SMART GRID</h1>
+                <p>Student Project - Digital Command Center</p>
+                
+                <div class="alert" id="loginAlert"></div>
+                
+                <div class="form-group">
+                    <input type="text" id="username" placeholder="Username" class="form-input">
+                </div>
+                <div class="form-group">
+                    <input type="password" id="password" placeholder="Password" class="form-input">
+                </div>
+                
+                <button onclick="login()" class="btn btn-primary">ACCESS SYSTEM</button>
+                
+                <div class="register-link">
+                    <p>New user? <a href="#" onclick="showRegister()">Register here</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Register Screen -->
+    <div id="registerScreen" class="screen">
+        <div class="login-container">
+            <div class="login-card">
+                <h1>📝 USER REGISTRATION</h1>
+                <p>Create New Operator Account</p>
+                
+                <div class="alert" id="registerAlert"></div>
+                
+                <div class="form-group">
+                    <input type="text" id="regUsername" placeholder="Username" class="form-input">
+                </div>
+                <div class="form-group">
+                    <input type="email" id="regEmail" placeholder="Email" class="form-input">
+                </div>
+                <div class="form-group">
+                    <input type="text" id="regFullName" placeholder="Full Name" class="form-input">
+                </div>
+                <div class="form-group">
+                    <input type="password" id="regPassword" placeholder="Password" class="form-input">
+                </div>
+                <div class="form-group">
+                    <input type="password" id="regConfirm" placeholder="Confirm Password" class="form-input">
+                </div>
+                
+                <div class="button-group">
+                    <button onclick="register()" class="btn btn-success">CREATE ACCOUNT</button>
+                    <button onclick="showLogin()" class="btn btn-secondary">BACK TO LOGIN</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Dashboard -->
+    <div id="dashboard" class="screen">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="header-title">
+                    <h1>⚡ KENYAN SMART GRID COMMAND CENTER</h1>
+                    <p>Student Project - Real-time Grid Monitoring</p>
+                </div>
+                <div class="user-info">
+                    <span id="userDisplay">Welcome, Operator</span>
+                    <button onclick="logout()" class="btn btn-outline">LOGOUT</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Alert Banner -->
+        <div class="alert-banner" id="alertBanner"></div>
+
+        <!-- Main Content -->
+        <div class="container">
+            <!-- Digital Metrics -->
+            <div class="metrics-grid">
+                <div class="metric-card" id="frequencyCard">
+                    <div class="metric-label">GRID FREQUENCY</div>
+                    <div class="metric-value" id="frequencyValue">50.00 Hz</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">LOAD DEMAND</div>
+                    <div class="metric-value" id="loadValue">1800 MW</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-label">TOTAL GENERATION</div>
+                    <div class="metric-value" id="generationValue">1800 MW</div>
+                </div>
+                <div class="metric-card" id="socCard">
+                    <div class="metric-label">BESS SOC</div>
+                    <div class="metric-value" id="socValue">65.0%</div>
+                </div>
+            </div>
+
+            <!-- Charts Row -->
+            <div class="charts-row">
+                <div class="chart-container">
+                    <div id="frequencyGauge"></div>
+                </div>
+                <div class="chart-container">
+                    <div id="batteryGauge"></div>
+                </div>
+                <div class="chart-container">
+                    <div id="generationChart"></div>
+                </div>
+            </div>
+
+            <!-- Control Panel -->
+            <div class="control-panel">
+                <h3>🎮 SCENARIO CONTROL</h3>
+                <div class="scenario-buttons">
+                    <button onclick="setScenario('normal')" class="btn-scenario btn-normal">🟢 NORMAL</button>
+                    <button onclick="setScenario('load_surge')" class="btn-scenario btn-warning">🏭 LOAD SURGE</button>
+                    <button onclick="setScenario('generator_trip')" class="btn-scenario btn-danger">🚨 GENERATOR TRIP</button>
+                    <button onclick="setScenario('renewable_drop')" class="btn-scenario btn-warning">🌥️ RENEWABLE DROP</button>
+                    <button onclick="setScenario('blackout')" class="btn-scenario btn-danger">⚡ BLACKOUT</button>
+                </div>
+            </div>
+
+            <!-- System Info -->
+            <div class="info-panel">
+                <h3>📊 SYSTEM INFORMATION</h3>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <strong>Kenya Generation Capacity:</strong><br>
+                        • Geothermal: 985 MW<br>
+                        • Hydro: 826 MW<br>
+                        • Wind: 336 MW<br>
+                        • Solar: 210 MW<br>
+                        • Thermal: 655 MW<br>
+                        • Total: 3,012 MW
+                    </div>
+                    <div class="info-item">
+                        <strong>BESS Specifications:</strong><br>
+                        • Power Capacity: 300 MW<br>
+                        • Energy Capacity: 300 MWh<br>
+                        • SOC Range: 0-100%<br>
+                        • Response Time: &lt;1 second
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
